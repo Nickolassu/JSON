@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:pilem/models/movie.dart';
+import 'package:pilem/screen/detail_screen.dart';
 import 'package:pilem/services/api_service.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -50,7 +51,7 @@ class _HomeScreenState extends State<HomeScreen> {
             children: [
               _buildMovieList('All Movies', _allMovies),
               _buildMovieList('Trending Movies', _trendingMovies),
-               _buildMovieList('Popular Movies', _popularMovies),
+              _buildMovieList('Popular Movies', _popularMovies),
             ],
           ),
         ));
@@ -75,25 +76,30 @@ class _HomeScreenState extends State<HomeScreen> {
             itemBuilder: (context, index) {
               final Movie movie = movies[index];
               return GestureDetector(
-                onTap: () {},
+                onTap: () => Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => DetailScreen(movie: movie))),
                 child: Padding(
                   padding: const EdgeInsets.all(8.0),
                   child: Column(
                     children: [
-                      Image.network('https://image.tmdb.org/t/p/w500${movie.posterPath}',
-                      height: 150,
-                      width: 100,
-                      fit: BoxFit.cover,
+                      Image.network(
+                        'https://image.tmdb.org/t/p/w500${movie.posterPath}',
+                        height: 150,
+                        width: 100,
+                        fit: BoxFit.cover,
                       ),
                       const SizedBox(height: 5),
                       Text(
-                        movie.title.length > 14 ? '${movie.title.substring(0,10)}...':
-                        movie.title,
+                        movie.title.length > 14
+                            ? '${movie.title.substring(0, 10)}...'
+                            : movie.title,
                         style: const TextStyle(fontWeight: FontWeight.bold),
                       ),
                     ],
                   ),
-                  ),
+                ),
               );
             },
           ),
